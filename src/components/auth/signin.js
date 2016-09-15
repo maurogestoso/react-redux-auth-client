@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react'
 import {reduxForm, Field} from 'redux-form'
+import {connect} from 'react-redux';
+import * as actions from '../../actions/index'
 
 class Signin extends React.Component {
   render () {
@@ -22,6 +24,7 @@ class Signin extends React.Component {
             type='password'
             className='form-control'/>
         </fieldset>
+        {this.renderAlert()}
         <button action='submit' className='btn btn-primary btn-ghost'>Sign in</button>
       </form>
     );
@@ -29,10 +32,26 @@ class Signin extends React.Component {
 
   handleFormSubmit ({email, password}) {
     console.log(email, password);
+    this.props.signinUser({email, password});
+  }
+
+  renderAlert () {
+    return this.props.errorMessage ?
+      (<div className='alert alert-error'>
+        <strong>Oops!</strong> {this.props.errorMessage}
+      </div>) : null;
   }
 }
 
-export default reduxForm({
+const SigninForm = reduxForm({
   form: 'signin',
   fields: ['email', 'password']
 })(Signin);
+
+function mapStateToProps({auth}) {
+  return {
+    errorMessage: auth.error
+  }
+}
+
+export default connect(mapStateToProps, actions)(SigninForm)
