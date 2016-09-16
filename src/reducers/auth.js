@@ -1,4 +1,4 @@
-import {AUTH_USER, UNAUTH_USER, AUTH_ERROR} from '../actions/types'
+import {AUTH_USER, UNAUTH_USER, AUTH_ERROR, FETCH_MESSAGE} from '../actions/types'
 
 // const initialState = {
 //   authenticated: false,
@@ -13,6 +13,8 @@ export default function auth(prevState = {}, action) {
       return {...prevState, authenticated: false, error: ''};
     case AUTH_ERROR:
       return {...prevState, error: action.payload};
+    case FETCH_MESSAGE:
+      return {...prevState, message: action.payload};
     default:
       return prevState;
   }

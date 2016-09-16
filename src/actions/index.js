@@ -3,7 +3,8 @@ import {browserHistory} from 'react-router';
 import {
   AUTH_USER,
   UNAUTH_USER,
-  AUTH_ERROR
+  AUTH_ERROR,
+  FETCH_MESSAGE
 } from './types'
 
 const API_URL = 'http://localhost:3090';
@@ -56,4 +57,23 @@ export function signoutUser () {
   return {
     type: UNAUTH_USER
   }
+}
+
+export function fetchMessage () {
+  return function (dispatch) {
+    axios.get(API_URL, {
+      headers: {
+        authorization: localStorage.getItem('token')
+      }
+    })
+      .then(res => {
+        dispatch({
+          type: FETCH_MESSAGE,
+          payload: res.data.message
+        })
+      })
+      .catch(err => {
+        console.log(res.error);
+      });
+  };
 }
